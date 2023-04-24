@@ -2,6 +2,7 @@ package swag
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"go/ast"
 	goparser "go/parser"
@@ -133,6 +134,8 @@ func (operation *Operation) ParseComment(comment string, astFile *ast.File) erro
 		operation.ID = lineRemainder
 	case tagsAttr:
 		operation.ParseTagsComment(lineRemainder)
+	case "@group":
+		return errors.New("reset")
 	case acceptAttr:
 		return operation.ParseAcceptComment(lineRemainder)
 	case produceAttr:

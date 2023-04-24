@@ -285,6 +285,12 @@ func SetTags(include string) func(*Parser) {
 	}
 }
 
+func SetGroups(include string) func(*Parser) {
+	return func(p *Parser) {
+
+	}
+}
+
 // SetParseExtension parses only those operations which match given extension
 func SetParseExtension(parseExtension string) func(*Parser) {
 	return func(p *Parser) {
@@ -916,7 +922,14 @@ func (parser *Parser) ParseRouterAPIInfo(fileInfo *AstFileInfo) error {
 				for _, comment := range astDeclaration.Doc.List {
 					err := operation.ParseComment(comment.Text, fileInfo.File)
 					if err != nil {
-						return fmt.Errorf("ParseComment error in file %s :%+v", fileInfo.Path, err)
+						if err.Error() == "reset" {
+							_ = processRouterOperation(parser, operation)
+							operation = NewOperation(parser, SetCodeExampleFilesDirectory(parser.codeExampleFilesDir))
+							continue
+						} else {
+							return fmt.Errorf("ParseComment error in file %s :%+v", fileInfo.Path, err)
+						}
+
 					}
 				}
 				err := processRouterOperation(parser, operation)
