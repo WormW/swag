@@ -285,12 +285,6 @@ func SetTags(include string) func(*Parser) {
 	}
 }
 
-func SetGroups(include string) func(*Parser) {
-	return func(p *Parser) {
-
-	}
-}
-
 // SetParseExtension parses only those operations which match given extension
 func SetParseExtension(parseExtension string) func(*Parser) {
 	return func(p *Parser) {
